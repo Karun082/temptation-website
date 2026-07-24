@@ -19,7 +19,7 @@ const siteData = {
       name: "Classic Kapi Tiramisu",
       size: "250ml takeaway box",
       price: "Rs. 150",
-      availability: "Unavailable",
+      availability: "Available",
       description:
         "A layered tiramisu with a smooth, light finish and a balanced coffee profile.",
       image: "assets/images/classic-kapi-close.jpeg",
@@ -29,7 +29,7 @@ const siteData = {
       name: "Chocolate Tiramisu",
       size: "250ml takeaway box",
       price: "Rs. 150",
-      availability: "Available",
+      availability: "Unavailable",
       description:
         "A rich chocolate-forward tiramisu with creamy layers and a deep cocoa finish.",
       image: "assets/images/chocolate-tiramisu.jpeg",
@@ -45,14 +45,24 @@ const siteData = {
       image: "assets/images/tres-leches.jpeg",
       alt: "Tres leches dessert in 750 ml bowl",
     },
+    {
+      name: "Puddle cake",
+      size: "500ml takeaway box",
+      price: "Rs. 180",
+      availability: "Available",
+      description:
+        "A rich chocolate dessert with a gooey, indulgent finish and deep cocoa flavour in every bite.",
+      image: "assets/images/puddle-cake.png",
+      alt: "Puddle cake in 500ml takeaway box",
+    },
   ],
   newDrops: [
     {
       name: "This Week Special",
       description:
-        "Tres Leches is this week's featured dessert, soaked in three kinds of milk for a rich, creamy finish and a soft homemade texture.",
-      image: "assets/images/tres-leches.jpeg",
-      status: "Tres leches",
+        "Puddle Cake is this week's featured dessert, filled with rich chocolate goodness, topped with a glossy chocolate glaze, and baked for a soft, fudgy finish that melts in every bite.",
+      image: "assets/images/puddle-cake.png",
+      status: "Puddle Cake",
     },
     {
       name: "Two-Week New Drop",
