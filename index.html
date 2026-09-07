@@ -19,24 +19,30 @@
   <body>
     <div class="page-shell">
       <header class="topbar" id="top">
-        <a class="brand" href="#top" aria-label="Temptation home">
+        <a
+          class="brand"
+          href="index.html"
+          aria-label="Temptation home"
+        >
           <img src="assets/images/logo.jpeg" alt="Temptation logo" />
-          <div>
-            <span class="brand-name">Temptation</span>
-            <span class="brand-handle">@temptations137</span>
-          </div>
         </a>
 
-        <nav class="topnav" aria-label="Primary">
-          <a href="#story">Our Story</a>
-          <a href="#menu">Menu</a>
-          <a href="#new-drops">New Drops</a>
-          <a href="#videos">Videos</a>
-          <a href="#reviews">Reviews</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        <div class="header-order-actions">
+          <a class="header-order-whatsapp" href="https://wa.me/919880898666?text=Hello%20Temptation%2C%20I%20would%20like%20to%20place%20an%20order%20for%20your%20desserts." target="_blank" rel="noopener noreferrer">Order on WhatsApp</a>
+          <a class="header-order-instagram" href="https://www.instagram.com/temptations137/" target="_blank" rel="noopener noreferrer">Order on Instagram</a>
+        </div>
 
-        <div class="top-actions" id="top-actions"></div>
+        <details class="header-dropdown">
+          <summary aria-label="Open menu"><span class="hamburger-icon" aria-hidden="true"></span></summary>
+          <nav class="dropdown-menu" aria-label="Primary">
+            <a href="story.html">Our Story</a>
+            <a href="menu.html">Menu</a>
+            <a href="new-drops.html">New Drops</a>
+            <a href="videos.html">Videos</a>
+            <a href="reviews.html">Reviews</a>
+            <a href="contact.html">Contact</a>
+          </nav>
+        </details>
       </header>
 
       <main>
@@ -81,67 +87,37 @@
         </section>
 
         <section class="values-band" aria-label="Brand values">
-          <div class="value-pill">Eggless</div>
-          <div class="value-pill">No Preservatives</div>
-          <div class="value-pill">No Essence</div>
-          <div class="value-pill">No Chemicals Added</div>
-          <div class="value-pill">Baked with Love</div>
+          <article class="value-pill"><span class="value-index">01</span><h3>Eggless</h3><p>Made without eggs.</p></article>
+          <article class="value-pill"><span class="value-index">02</span><h3>No Preservatives</h3><p>Freshly prepared in small batches.</p></article>
+          <article class="value-pill"><span class="value-index">03</span><h3>No Essence</h3><p>Real ingredients and honest flavour.</p></article>
+          <article class="value-pill"><span class="value-index">04</span><h3>No Chemicals Added</h3><p>Simple desserts, thoughtfully made.</p></article>
+          <article class="value-pill"><span class="value-index">05</span><h3>Baked with Love</h3><p>Made with care for every order.</p></article>
         </section>
 
         <section class="section intro-section" id="menu">
           <div class="section-heading">
             <p class="section-kicker">Signature collection</p>
-            <h2>Our tiramisu menu</h2>
-            <p>
-              The current menu is centred around rich, creamy tiramisu served
-              in 250ml takeaway boxes for maximum freshness.
-            </p>
+            <h2>Our dessert menu</h2>
+            <p>Freshly prepared desserts, available for takeaway pickup only.</p>
           </div>
           <div class="dessert-grid" id="dessert-grid"></div>
         </section>
 
-        <section class="section story-section">
+        <section class="section story-section" id="story">
           <div class="story-layout">
             <div class="story-image-cluster" aria-label="Dessert showcase">
-              <figure class="story-photo story-photo-main">
-                <img
-                  src="assets/images/chocolate-tiramisu.jpeg"
-                  alt="Chocolate tiramisu dessert"
-                />
-              </figure>
-              <figure class="story-photo story-photo-top">
-                <img
-                  src="assets/images/tres-leches.jpeg"
-                  alt="Tres leches dessert"
-                />
-              </figure>
-              <figure class="story-photo story-photo-left">
-                <img
-                  src="assets/images/classic-kapi-close.jpeg"
-                  alt="Classic Kapi tiramisu close-up"
-                />
-              </figure>
-              <figure class="story-photo story-photo-right">
-                <img
-                  src="assets/images/puddle-cake.png"
-                  alt="Puddle cake dessert"
-                />
-              </figure>
+              <figure class="story-photo story-photo-main"><img src="assets/images/chocolate-tiramisu.jpeg" alt="Chocolate tiramisu dessert" /></figure>
+              <figure class="story-photo story-photo-top"><img src="assets/images/tres-leches.jpeg" alt="Tres leches dessert" /></figure>
+              <figure class="story-photo story-photo-left"><img src="assets/images/classic-kapi-close.jpeg" alt="Classic Kapi tiramisu close-up" /></figure>
+              <figure class="story-photo story-photo-right"><img src="assets/images/puddle-cake.png" alt="Puddle cake dessert" /></figure>
               <div class="story-glow" aria-hidden="true"></div>
             </div>
             <div class="story-content">
               <p class="section-kicker">Why Temptation stands apart</p>
               <h2>Handcrafted for people who care about taste and trust.</h2>
-              <p>
-                Temptation is built around clean ingredients, small-batch
-                preparation, and a homemade standard that puts flavour first.
-                No artificial shortcuts, no factory feel, and no compromise on
-                texture.
-              </p>
-              <p>
-                Every order is prepared for pickup, so your dessert reaches you
-                fresh and ready to enjoy.
-              </p>
+              <p>Temptation is built around clean ingredients, small-batch preparation, and a homemade standard that puts flavour first. No artificial shortcuts, no factory feel, and no compromise on texture.</p>
+              <p>Every order is prepared for pickup, so your dessert reaches you fresh and ready to enjoy.</p>
+              <div class="story-actions" aria-label="Order Temptation desserts"></div>
             </div>
           </div>
         </section>
@@ -150,11 +126,7 @@
           <div class="section-heading section-heading-light">
             <p class="section-kicker">Fresh every two weeks</p>
             <h2>New dessert drops, one indulgence at a time</h2>
-            <p>
-              A new dessert will be introduced every two weeks. This space
-              highlights the current special and the next fresh drop from
-              Temptation.
-            </p>
+            <p>A new dessert is introduced every two weeks. See the current special and what is coming next.</p>
           </div>
           <div class="drops-grid" id="drops-grid"></div>
         </section>
@@ -163,10 +135,7 @@
           <div class="section-heading">
             <p class="section-kicker">Real dessert moments</p>
             <h2>Watch Temptation come to life</h2>
-            <p>
-              Short clips, reels, and behind-the-scenes moments from
-              @temptations137.
-            </p>
+            <p>Short clips, reels, and behind-the-scenes moments from the kitchen.</p>
           </div>
           <div class="video-grid" id="video-grid"></div>
         </section>
@@ -175,31 +144,21 @@
           <div class="section-heading">
             <p class="section-kicker">Customer words</p>
             <h2>What people are saying</h2>
-            <p>
-              Homemade desserts earn trust one box at a time. These are real
-              words from your early customers.
-            </p>
+            <p>Real words from customers who have enjoyed Temptation desserts.</p>
           </div>
           <div class="reviews-grid" id="reviews-grid"></div>
         </section>
+
       </main>
 
       <footer class="footer" id="contact">
         <div class="footer-panel footer-order">
           <p class="section-kicker">Order & connect</p>
           <h2>Place your order on Instagram or WhatsApp.</h2>
-          <p>
-            Orders are made for takeaway. After confirmation, customers should
-            come and collect the order directly.
-          </p>
+          <p>Orders are made for takeaway. After confirmation, customers should come and collect the order directly.</p>
           <div class="footer-actions" id="footer-actions"></div>
         </div>
-
-        <div class="footer-logo">
-          <img src="assets/images/logo.jpeg" alt="Temptation logo" />
-          <p>Baked with love, just for you.</p>
-        </div>
-
+        <div class="footer-logo"><img src="assets/images/logo.jpeg" alt="Temptation logo" /></div>
         <div class="footer-panel footer-info" id="contact-details"></div>
       </footer>
     </div>

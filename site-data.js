@@ -108,6 +108,7 @@ const siteData = {
     {
       title: "Instagram",
       text: "Follow, message, and stay updated on every new dessert drop at @temptations137.",
+      linkType: "instagram",
     },
     {
       title: "Bulk orders, parties & events",

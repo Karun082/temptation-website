@@ -18,11 +18,54 @@ if (heroText && business.taglines?.length) {
   heroText.textContent = `${business.taglines[1]}. ${business.taglines[2]} Just fresh, indulgent desserts crafted for pickup and enjoyed at their best.`;
 }
 
-function createActionLink(label, href, variant = "primary", newTab = false) {
+document.querySelectorAll(".brand").forEach((brand) => {
+  brand.href = "index.html";
+  brand.removeAttribute("target");
+  brand.removeAttribute("rel");
+  brand.setAttribute("aria-label", "Temptation home");
+});
+
+document.querySelectorAll(".header-dropdown").forEach((dropdown) => {
+  dropdown.querySelectorAll(".dropdown-action, .dropdown-divider").forEach((item) => item.remove());
+
+  if (!dropdown.previousElementSibling?.classList.contains("header-order-actions")) {
+    const actions = document.createElement("div");
+    actions.className = "header-order-actions";
+    actions.innerHTML = `
+      <a class="header-order-whatsapp" href="${whatsappLink}" target="_blank" rel="noreferrer">Order on WhatsApp</a>
+      <a class="header-order-instagram" href="${instagramLink}" target="_blank" rel="noreferrer">Order on Instagram</a>
+    `;
+    dropdown.before(actions);
+  }
+
+  const summary = dropdown.querySelector("summary");
+  if (summary) {
+    summary.setAttribute("aria-label", "Open menu");
+    summary.innerHTML = '<span class="hamburger-icon" aria-hidden="true"></span>';
+  }
+});
+
+function getSocialIcon(type) {
+  if (type === "whatsapp") {
+    return '<span class="social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.4 7.4L3.5 20.5 5 15.9A8.4 8.4 0 1 1 20.5 11.6Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M8.5 7.8c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.8c.1.3.1.5-.1.7l-.5.6c.6 1.2 1.5 2.1 2.7 2.7l.6-.5c.2-.2.4-.2.7-.1l1.8.7c.3.1.4.3.4.5v.5c0 .3 0 .5-.4.7-.4.2-.9.4-1.4.3-3.7-.8-6.6-3.7-7.4-7.4-.1-.5.1-1 .3-1.4Z" fill="currentColor"/></svg></span>';
+  }
+
+  if (type === "instagram") {
+    return '<span class="social-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.9"/><circle cx="17.3" cy="6.8" r="1.1" fill="currentColor"/></svg></span>';
+  }
+
+  return "";
+}
+
+function createActionLink(label, href, variant = "primary", newTab = false, iconType = "") {
   const link = document.createElement("a");
-  link.className = variant === "secondary" ? "cta-secondary" : "cta";
+  link.className = `${variant === "secondary" ? "cta-secondary" : "cta"}${iconType ? " has-icon" : ""}`;
   link.href = href;
   link.textContent = label;
+
+  if (iconType) {
+    link.insertAdjacentHTML("afterbegin", getSocialIcon(iconType));
+  }
 
   if (newTab) {
     link.target = "_blank";
@@ -36,7 +79,7 @@ function mountActions(targetId, options) {
   const container = document.getElementById(targetId);
   options.forEach((option) => {
     container.append(
-      createActionLink(option.label, option.href, option.variant, option.newTab)
+      createActionLink(option.label, option.href, option.variant, option.newTab, option.iconType)
     );
   });
 }
@@ -49,6 +92,7 @@ if (whatsappLink) {
     href: whatsappLink,
     variant: "primary",
     newTab: true,
+    iconType: "whatsapp",
   });
 }
 
@@ -57,12 +101,45 @@ primaryActions.push({
   href: instagramLink,
   variant: whatsappLink ? "secondary" : "primary",
   newTab: true,
+  iconType: "instagram",
 });
 
-mountActions("footer-actions", primaryActions);
+if (document.getElementById("footer-actions")) {
+  mountActions("footer-actions", primaryActions);
+}
+
+document.querySelectorAll(".story-actions").forEach((container) => {
+  if (!container.children.length) {
+    primaryActions.forEach((option) => {
+      container.append(
+        createActionLink(option.label, option.href, option.variant, option.newTab, option.iconType)
+      );
+    });
+  }
+});
+
+const storyPhotos = [...document.querySelectorAll(".story-image-cluster .story-photo img")];
+if (storyPhotos.length > 1 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const rotatingDesserts = storyPhotos.map((photo) => ({
+    src: photo.src,
+    alt: photo.alt,
+  }));
+
+  setInterval(() => {
+    rotatingDesserts.push(rotatingDesserts.shift());
+    storyPhotos.forEach((photo, index) => {
+      photo.classList.add("is-changing");
+      window.setTimeout(() => {
+        photo.src = rotatingDesserts[index].src;
+        photo.alt = rotatingDesserts[index].alt;
+        photo.classList.remove("is-changing");
+      }, 220);
+    });
+  }, 3600);
+}
 
 const dessertGrid = document.getElementById("dessert-grid");
-menu.forEach((item) => {
+if (dessertGrid) menu.forEach((item) => {
   const card = document.createElement("article");
   card.className = "dessert-card";
 
@@ -76,52 +153,56 @@ menu.forEach((item) => {
     <div>
       <p class="dessert-meta">${item.size}</p>
       <h3>${item.name}</h3>
-      <p>${item.description}</p>
-      <p class="dessert-price">${item.price}</p>
-      <p class="dessert-availability${
-        item.availability === "Unavailable" ? " is-unavailable" : ""
-      }">${item.availability || "Available"}</p>
     </div>
   `;
 
   const buttonRow = document.createElement("div");
-  if (item.availability !== "Unavailable" && whatsappLink) {
+  buttonRow.className = "dessert-order-actions";
+  buttonRow.innerHTML = '<p class="dessert-order-title">Order now on</p>';
+
+  if (whatsappLink) {
     buttonRow.append(
-      createActionLink("Order on WhatsApp", whatsappLink, "primary", true)
+      createActionLink("Order on WhatsApp", whatsappLink, "primary", true, "whatsapp")
     );
   }
 
-  if (item.availability !== "Unavailable") {
-    buttonRow.append(
-      createActionLink(
-        "Order on Instagram",
-        instagramLink,
+  buttonRow.append(
+    createActionLink(
+      "Order on Instagram",
+      instagramLink,
         whatsappLink ? "secondary" : "primary",
-        true
-      )
-    );
-  }
+        true,
+        "instagram"
+    )
+  );
 
-  copy.append(buttonRow);
   card.append(image, copy);
+  if (buttonRow.querySelector("a")) {
+    card.append(buttonRow);
+  }
   dessertGrid.append(card);
 });
 
 const dropsGrid = document.getElementById("drops-grid");
-newDrops.forEach((item) => {
+if (dropsGrid) newDrops.forEach((item) => {
   const card = document.createElement("article");
-  card.className = `drop-card${item.comingSoon ? " is-coming" : ""}`;
+  card.className = `drop-card${item.comingSoon ? " is-coming" : ""}${item === newDrops[0] ? " is-featured" : ""}`;
   card.innerHTML = `
     <img src="${item.image}" alt="${item.name}" />
-    <h3>${item.name}</h3>
-    <p>${item.description}</p>
-    <span class="drop-tag">${item.status}</span>
+    <div class="drop-card-copy">
+      <span class="drop-orbit" aria-hidden="true"></span>
+      <h3>${item.name}</h3>
+      <p>${item.description}</p>
+      <span class="drop-tag">${item.status}</span>
+    </div>
   `;
   dropsGrid.append(card);
 });
 
 const videoGrid = document.getElementById("video-grid");
-videos.forEach((item) => {
+if (videoGrid) {
+  // Duplicate the short reel set so the carousel can loop without a visible end.
+  [...videos, ...videos].forEach((item) => {
   const card = document.createElement("article");
   card.className = "video-card";
 
@@ -137,10 +218,43 @@ videos.forEach((item) => {
 
   card.append(video);
   videoGrid.append(card);
-});
+  });
+
+  let carouselFrame;
+  let isCarouselPaused = false;
+
+  function moveVideoCarousel() {
+    if (!isCarouselPaused) {
+      videoGrid.scrollLeft += 0.35;
+
+      if (videoGrid.scrollLeft >= videoGrid.scrollWidth / 2) {
+        videoGrid.scrollLeft -= videoGrid.scrollWidth / 2;
+      }
+    }
+
+    carouselFrame = requestAnimationFrame(moveVideoCarousel);
+  }
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    carouselFrame = requestAnimationFrame(moveVideoCarousel);
+  }
+
+  ["mouseenter", "touchstart", "focusin"].forEach((eventName) => {
+    videoGrid.addEventListener(eventName, () => {
+      isCarouselPaused = true;
+    });
+  });
+
+  ["mouseleave", "touchend", "focusout"].forEach((eventName) => {
+    videoGrid.addEventListener(eventName, () => {
+      isCarouselPaused = false;
+    });
+  });
+}
 
 const reviewsGrid = document.getElementById("reviews-grid");
-reviews.forEach((item) => {
+if (reviewsGrid) {
+  [...reviews, ...reviews].forEach((item) => {
   const card = document.createElement("article");
   card.className = "review-card";
   card.innerHTML = `
@@ -148,23 +262,66 @@ reviews.forEach((item) => {
     <div class="review-name">- ${item.name}</div>
   `;
   reviewsGrid.append(card);
-});
+  });
+
+  let reviewIndex = 0;
+  let reviewsPaused = false;
+
+  function moveToNextReview() {
+    if (reviewsPaused) return;
+
+    const firstReview = reviewsGrid.querySelector(".review-card");
+    if (!firstReview) return;
+
+    reviewIndex += 1;
+    if (reviewIndex >= reviews.length) {
+      reviewsGrid.scrollTo({ left: 0, behavior: "auto" });
+      reviewIndex = 0;
+      return;
+    }
+
+    reviewsGrid.scrollTo({
+      left: reviewIndex * (firstReview.offsetWidth + 24),
+      behavior: "smooth",
+    });
+  }
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    window.setInterval(moveToNextReview, 4800);
+  }
+
+  ["mouseenter", "touchstart", "focusin"].forEach((eventName) => {
+    reviewsGrid.addEventListener(eventName, () => {
+      reviewsPaused = true;
+    });
+  });
+
+  ["mouseleave", "touchend", "focusout"].forEach((eventName) => {
+    reviewsGrid.addEventListener(eventName, () => {
+      reviewsPaused = false;
+    });
+  });
+}
 
 const contactTarget = document.getElementById("contact-details");
-contactDetails.forEach((item) => {
-  const cardTag = item.linkType === "whatsapp" && whatsappLink ? "a" : "article";
-  const card = document.createElement(cardTag);
-  card.className = "detail-card";
+if (contactTarget) contactDetails.forEach((item) => {
+  const isWhatsapp = item.linkType === "whatsapp" && whatsappLink;
+  const isInstagram = item.linkType === "instagram";
+  const card = document.createElement(isWhatsapp || isInstagram ? "a" : "article");
+  card.className = `detail-card${isWhatsapp ? " is-whatsapp" : ""}${isInstagram ? " is-instagram" : ""}`;
 
-  if (cardTag === "a") {
-    card.href = whatsappLink;
+  if (isWhatsapp || isInstagram) {
+    card.href = isWhatsapp ? whatsappLink : instagramLink;
     card.target = "_blank";
     card.rel = "noreferrer";
   }
 
   card.innerHTML = `
-    <h3>${item.title}</h3>
-    <p>${item.text}</p>
+    ${getSocialIcon(isWhatsapp ? "whatsapp" : isInstagram ? "instagram" : "")}
+    <div>
+      <h3>${item.title}</h3>
+      <p>${item.text}</p>
+    </div>
   `;
   contactTarget.append(card);
 });

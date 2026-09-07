@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Temptation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="Temptation home"><img src="assets/images/logo.jpeg" alt="Temptation logo" /></a>
+        <div class="header-order-actions">
+          <a class="header-order-whatsapp" href="https://wa.me/919880898666?text=Hello%20Temptation%2C%20I%20would%20like%20to%20place%20an%20order%20for%20your%20desserts." target="_blank" rel="noopener noreferrer">Order on WhatsApp</a>
+          <a class="header-order-instagram" href="https://www.instagram.com/temptations137/" target="_blank" rel="noopener noreferrer">Order on Instagram</a>
+        </div>
+        <details class="header-dropdown"><summary aria-label="Open menu"><span class="hamburger-icon" aria-hidden="true"></span></summary><nav class="dropdown-menu" aria-label="Primary"><a href="index.html">Home</a><a href="story.html">Our Story</a><a href="menu.html">Menu</a><a href="new-drops.html">New Drops</a><a href="videos.html">Videos</a><a href="reviews.html">Reviews</a></nav></details>
+      </header>
+      <main class="page-main">
+        <section class="contact-page section page-hero" aria-labelledby="contact-page-title">
+          <div class="section-heading">
+            <p class="section-kicker">Order & connect</p>
+            <h1 id="contact-page-title">Contact Temptation</h1>
+            <p>Orders are pickup only. Use WhatsApp for quick ordering, or Instagram to see the latest dessert drops.</p>
+          </div>
+          <div class="contact-page-layout">
+            <aside class="contact-channel-list" id="contact-details"></aside>
+            <section class="contact-form-panel" aria-labelledby="contact-form-title">
+              <div class="contact-form-intro">
+                <p class="section-kicker">Contact us</p>
+                <h2 id="contact-form-title">Tell us what you are planning.</h2>
+                <p>For dessert orders, bulk orders, parties, and events, share your details and continue directly on WhatsApp.</p>
+              </div>
+              <form class="contact-form">
+                <label>Name<input name="name" type="text" placeholder="Your name" required /></label>
+                <label>WhatsApp number<input name="phone" type="tel" inputmode="tel" placeholder="Your phone number" required /></label>
+                <label>Enquiry type<select name="type"><option>Regular order</option><option>Bulk order</option><option>Party or event</option><option>Other enquiry</option></select></label>
+                <label class="contact-form-message">Your message<textarea name="message" rows="4" placeholder="Tell us which dessert or event you are planning."></textarea></label>
+                <button type="button" class="contact-submit">Continue on WhatsApp</button>
+              </form>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="site-data.js"></script><script src="app.js"></script>
+  </body>
+</html>
