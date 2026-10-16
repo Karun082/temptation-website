@@ -544,7 +544,8 @@ a {
   mix-blend-mode: screen;
 }
 
-.hero-main-image {
+.hero-main-image,
+.hero-reel {
   position: absolute;
   inset: 98px 64px 94px 58px;
   width: auto;
@@ -552,6 +553,64 @@ a {
   object-fit: cover;
   border-radius: 32px;
   box-shadow: 0 32px 60px rgba(30, 12, 6, 0.4);
+  z-index: 1;
+}
+
+.hero-reel {
+  width: calc(100% - 122px);
+  background: #25130c;
+}
+
+.hero-reel-orbit {
+  position: absolute;
+  z-index: 2;
+  top: 78px;
+  right: 42px;
+  width: 104px;
+  height: 104px;
+  border: 1px solid rgba(255, 242, 229, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-reel-orbit::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f8c9a5;
+  box-shadow: 0 0 0 7px rgba(248, 201, 165, 0.14);
+}
+
+.hero-reel-label {
+  position: absolute;
+  z-index: 2;
+  top: 124px;
+  left: 82px;
+  display: grid;
+  gap: 3px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 248, 241, 0.36);
+  border-radius: 14px;
+  color: #fff8f1;
+  background: rgba(45, 22, 13, 0.58);
+  backdrop-filter: blur(9px);
+}
+
+.hero-reel-label span {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero-reel-label strong {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
 .hero-floating-image {
@@ -580,6 +639,7 @@ a {
     linear-gradient(180deg, rgba(133, 81, 57, 0.92), rgba(91, 47, 31, 0.96));
   border: 1px solid rgba(255, 243, 230, 0.25);
   box-shadow: 0 22px 36px rgba(34, 12, 6, 0.28);
+  z-index: 3;
 }
 
 .hero-badge span {
@@ -688,6 +748,43 @@ a {
 
 .intro-section {
   padding-top: 46px;
+}
+
+.menu-filters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 34px 0 28px;
+}
+
+.menu-filter {
+  padding: 10px 22px;
+  border: 1px solid rgba(109, 61, 43, 0.22);
+  border-radius: 999px;
+  color: var(--accent-deep);
+  background: rgba(255, 251, 246, 0.8);
+  font: 700 0.8rem/1 "Manrope", sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.menu-filter:hover,
+.menu-filter:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.menu-filter:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.menu-filter.is-active {
+  border-color: var(--accent-deep);
+  color: #fffaf5;
+  background: var(--accent-deep);
 }
 
 .dessert-grid,
@@ -1338,6 +1435,10 @@ a {
   color: #fff8f1;
 }
 
+.contact-page-layout .detail-card p {
+  color: rgba(255, 244, 236, 0.8);
+}
+
 .detail-card.is-whatsapp h3,
 .detail-card.is-instagram h3 {
   display: flex;
@@ -1366,111 +1467,55 @@ a.detail-card:focus-visible {
   border-color: rgba(255, 236, 224, 0.26);
 }
 
-.contact-form-panel {
+.contact-cta {
+  align-self: stretch;
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
-  gap: 32px;
-  grid-column: 1 / -1;
-  margin-top: 12px;
+  align-content: center;
   padding: 30px;
-  border: 1px solid rgba(255, 237, 225, 0.18);
-  border-radius: 26px;
-  background: rgba(255, 247, 240, 0.08);
+  border: 1px solid rgba(255, 250, 245, 0.72);
+  border-radius: 24px;
+  background: linear-gradient(145deg, #fffaf5 0%, #f7e9dd 100%);
+  box-shadow: 0 16px 34px rgba(35, 15, 8, 0.16);
 }
 
-.contact-form-intro h2 {
+.contact-cta h2 {
   margin: 0 0 12px;
-  color: #fff8f1;
+  color: var(--accent-deep);
   font-size: clamp(1.6rem, 2.5vw, 2.3rem);
   letter-spacing: -0.04em;
 }
 
-.contact-form-intro p:not(.section-kicker) {
+.contact-cta p:not(.section-kicker) {
   margin: 0;
-  color: rgba(255, 244, 236, 0.76);
+  color: var(--text-soft);
   line-height: 1.7;
 }
 
-.contact-form {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+.contact-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
 }
 
-.contact-form label {
-  display: grid;
-  gap: 8px;
-  color: rgba(255, 246, 239, 0.86);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.contact-form input,
-.contact-form select,
-.contact-form textarea {
-  width: 100%;
-  border: 1px solid rgba(255, 239, 228, 0.22);
-  border-radius: 12px;
-  outline: none;
+.contact-cta-actions .cta {
   color: #fffaf5;
-  background: rgba(255, 249, 243, 0.1);
-  font: inherit;
-  letter-spacing: normal;
-  text-transform: none;
+  background: linear-gradient(135deg, #2f8b5a, #196d43);
+  box-shadow: 0 12px 22px rgba(25, 109, 67, 0.2);
 }
 
-.contact-form input,
-.contact-form select {
-  min-height: 48px;
-  padding: 0 14px;
-}
-
-.contact-form textarea {
-  min-height: 110px;
-  padding: 14px;
-  resize: vertical;
-}
-
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-  color: rgba(255, 244, 236, 0.52);
-}
-
-.contact-form select option {
-  color: var(--text);
-  background: #fffaf5;
-}
-
-.contact-form input:focus,
-.contact-form select:focus,
-.contact-form textarea:focus {
-  border-color: rgba(255, 245, 236, 0.7);
-  box-shadow: 0 0 0 3px rgba(246, 215, 191, 0.14);
-}
-
-.contact-form-message {
-  grid-column: 1 / -1;
-}
-
-.contact-submit {
-  grid-column: 1 / -1;
-  min-height: 52px;
-  border: 0;
-  border-radius: 999px;
+.contact-cta-actions .cta-secondary {
+  border-color: rgba(62, 39, 35, 0.25);
   color: var(--accent-deep);
-  background: #fffaf5;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 800;
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  background: rgba(255, 255, 255, 0.44);
 }
 
-.contact-submit:hover,
-.contact-submit:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 25px rgba(25, 8, 3, 0.18);
+.contact-cta-note {
+  margin-top: 20px !important;
+  padding-top: 16px;
+  border-top: 1px solid rgba(62, 39, 35, 0.15);
+  font-size: 0.84rem;
+  font-weight: 700;
 }
 
 .contact-page-layout {
@@ -1483,15 +1528,6 @@ a.detail-card:focus-visible {
   border-radius: 30px;
   background: linear-gradient(135deg, #4b281a 0%, #5f3927 48%, #442316 100%);
   box-shadow: var(--shadow);
-}
-
-.contact-page-layout .contact-form-panel {
-  grid-column: auto;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
 }
 
 .contact-channel-list {
@@ -1601,7 +1637,6 @@ a.detail-card:focus-visible {
     margin-left: 0;
   }
 
-  .contact-form-panel,
   .contact-page-layout {
     grid-template-columns: 1fr;
   }
@@ -1667,10 +1702,25 @@ a.detail-card:focus-visible {
     border-radius: 36px;
   }
 
-  .hero-main-image {
+  .hero-main-image,
+  .hero-reel {
     inset: 34px 28px 120px;
     width: calc(100% - 56px);
     height: auto;
+  }
+
+  .hero-reel {
+    height: calc(100% - 154px);
+  }
+
+  .hero-reel-label {
+    top: 58px;
+    left: 48px;
+  }
+
+  .hero-reel-orbit {
+    top: 38px;
+    right: 22px;
   }
 
   .hero-floating-image {
@@ -1754,20 +1804,14 @@ a.detail-card:focus-visible {
     padding-right: 14vw;
   }
 
-  .contact-form-panel,
   .contact-page-layout {
     gap: 22px;
     padding: 20px;
     border-radius: 22px;
   }
 
-  .contact-form {
-    grid-template-columns: 1fr;
-  }
-
-  .contact-form-message,
-  .contact-submit {
-    grid-column: auto;
+  .contact-cta {
+    padding: 24px;
   }
 
   .videos-section {
@@ -1812,10 +1856,32 @@ a.detail-card:focus-visible {
     padding: 0;
   }
 
-  .hero-main-image {
+  .hero-main-image,
+  .hero-reel {
     inset: 22px 20px 112px;
     width: calc(100% - 40px);
     border-radius: 22px;
+  }
+
+  .hero-reel {
+    height: calc(100% - 134px);
+  }
+
+  .hero-reel-label {
+    top: 42px;
+    left: 36px;
+    padding: 8px 10px;
+  }
+
+  .hero-reel-label strong {
+    font-size: 1.05rem;
+  }
+
+  .hero-reel-orbit {
+    top: 26px;
+    right: 18px;
+    width: 76px;
+    height: 76px;
   }
 
   .hero-floating-image {
@@ -1931,13 +1997,13 @@ a.detail-card:focus-visible {
     animation-delay: 320ms;
   }
 
-  .hero-main-image,
-  .hero-floating-image {
+  .hero-reel,
+  .hero-reel-orbit {
     animation: floaty 5.8s ease-in-out infinite;
   }
 
-  .hero-floating-image {
-    animation-duration: 6.6s;
+  .hero-reel-orbit {
+    animation: orbit-pulse 4.6s ease-in-out infinite;
   }
 }
 
@@ -1961,6 +2027,19 @@ a.detail-card:focus-visible {
 
   50% {
     transform: translateY(-8px);
+  }
+}
+
+@keyframes orbit-pulse {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: rotate(180deg) scale(1.08);
+    opacity: 1;
   }
 }
 

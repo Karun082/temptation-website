@@ -17,6 +17,7 @@ const siteData = {
   menu: [
     {
       name: "Classic Kapi Tiramisu",
+      category: "Tiramisu",
       size: "250ml takeaway box",
       price: "Rs. 150",
       availability: "Available",
@@ -27,6 +28,7 @@ const siteData = {
     },
     {
       name: "Chocolate Tiramisu",
+      category: "Tiramisu",
       size: "250ml takeaway box",
       price: "Rs. 150",
       availability: "Unavailable",
@@ -36,7 +38,45 @@ const siteData = {
       alt: "Chocolate Tiramisu in 250ml box",
     },
     {
+      name: "Blueberry Cheesecake",
+      category: "Cheesecake",
+      size: "250ml takeaway box",
+      availability: "Available",
+      description: "A creamy cheesecake layered with a bright blueberry topping.",
+      image: "assets/images/blueberry-cheesecake.png",
+      alt: "Blueberry Cheesecake in 250ml takeaway box",
+    },
+    {
+      name: "Biscoff Cheesecake",
+      category: "Cheesecake",
+      size: "250ml takeaway box",
+      availability: "Available",
+      description: "A creamy cheesecake with a smooth Biscoff topping.",
+      image: "assets/images/biscoff-cheesecake.png",
+      alt: "Biscoff Cheesecake in 250ml takeaway box",
+    },
+    {
+      name: "Dream Tub Chocolate Cheesecake",
+      category: "Cheesecake",
+      size: "250ml takeaway box",
+      availability: "Available",
+      description: "A rich chocolate cheesecake with a smooth, indulgent finish.",
+      image: "assets/images/dream-tub-chocolate-cheesecake.png",
+      alt: "Dream Tub Chocolate Cheesecake in 250ml takeaway box",
+    },
+    {
+      name: "Rose Milk Tres Leches",
+      category: "Tres Leches",
+      size: "750ml takeaway box",
+      availability: "Available",
+      description:
+        "A delicate rose milk tres leches topped with soft cream and pistachios.",
+      image: "assets/images/rose-milk-tres-leches.png",
+      alt: "Rose Milk Tres Leches in 750ml takeaway box",
+    },
+    {
       name: "Tres leches",
+      category: "Tres Leches",
       size: "750 ml",
       price: "Rs. 200",
       availability: "Available",
@@ -47,6 +87,7 @@ const siteData = {
     },
     {
       name: "Puddle cake",
+      category: "Desserts",
       size: "500ml takeaway box",
       price: "Rs. 180",
       availability: "Available",

@@ -139,49 +139,74 @@ if (storyPhotos.length > 1 && !window.matchMedia("(prefers-reduced-motion: reduc
 }
 
 const dessertGrid = document.getElementById("dessert-grid");
-if (dessertGrid) menu.forEach((item) => {
-  const card = document.createElement("article");
-  card.className = "dessert-card";
+if (dessertGrid) {
+  const menuFilters = document.querySelectorAll(".menu-filter");
 
-  const image = document.createElement("img");
-  image.src = item.image;
-  image.alt = item.alt;
+  function renderMenu(category = "all") {
+    const visibleItems = category === "all"
+      ? menu
+      : menu.filter((item) => item.category === category);
 
-  const copy = document.createElement("div");
-  copy.className = "dessert-copy";
-  copy.innerHTML = `
-    <div>
-      <p class="dessert-meta">${item.size}</p>
-      <h3>${item.name}</h3>
-    </div>
-  `;
+    dessertGrid.innerHTML = "";
+    visibleItems.forEach((item) => {
+      const card = document.createElement("article");
+      card.className = "dessert-card";
 
-  const buttonRow = document.createElement("div");
-  buttonRow.className = "dessert-order-actions";
-  buttonRow.innerHTML = '<p class="dessert-order-title">Order now on</p>';
+      const image = document.createElement("img");
+      image.src = item.image;
+      image.alt = item.alt;
 
-  if (whatsappLink) {
-    buttonRow.append(
-      createActionLink("Order on WhatsApp", whatsappLink, "primary", true, "whatsapp")
-    );
+      const copy = document.createElement("div");
+      copy.className = "dessert-copy";
+      copy.innerHTML = `
+        <div>
+          <p class="dessert-meta">${item.size}</p>
+          <h3>${item.name}</h3>
+        </div>
+      `;
+
+      const buttonRow = document.createElement("div");
+      buttonRow.className = "dessert-order-actions";
+      buttonRow.innerHTML = '<p class="dessert-order-title">Order now on</p>';
+
+      if (whatsappLink) {
+        buttonRow.append(
+          createActionLink("Order on WhatsApp", whatsappLink, "primary", true, "whatsapp")
+        );
+      }
+
+      buttonRow.append(
+        createActionLink(
+          "Order on Instagram",
+          instagramLink,
+          whatsappLink ? "secondary" : "primary",
+          true,
+          "instagram"
+        )
+      );
+
+      card.append(image, copy);
+      if (buttonRow.querySelector("a")) {
+        card.append(buttonRow);
+      }
+      dessertGrid.append(card);
+    });
   }
 
-  buttonRow.append(
-    createActionLink(
-      "Order on Instagram",
-      instagramLink,
-        whatsappLink ? "secondary" : "primary",
-        true,
-        "instagram"
-    )
-  );
+  menuFilters.forEach((filter) => {
+    filter.addEventListener("click", () => {
+      const category = filter.dataset.category;
+      menuFilters.forEach((button) => {
+        const isActive = button === filter;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+      renderMenu(category);
+    });
+  });
 
-  card.append(image, copy);
-  if (buttonRow.querySelector("a")) {
-    card.append(buttonRow);
-  }
-  dessertGrid.append(card);
-});
+  renderMenu();
+}
 
 const dropsGrid = document.getElementById("drops-grid");
 if (dropsGrid) newDrops.forEach((item) => {
