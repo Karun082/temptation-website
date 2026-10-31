@@ -7,6 +7,35 @@ const {
   contactDetails,
 } = siteData;
 
+// Edit this list to control the order and content of the Honest Label photo showcase.
+const showcaseDesserts = [
+  {
+    name: "Classic Kapi Tiramisu",
+    image: "assets/images/classic-kapi-close.jpeg",
+    note: "Made with South Indian filter coffee.",
+  },
+  {
+    name: "Chocolate Tiramisu",
+    image: "assets/images/chocolate-tiramisu.jpeg",
+    note: "Rich chocolate layers with a deep cocoa finish.",
+  },
+  {
+    name: "Blueberry Cheesecake",
+    image: "assets/images/blueberry-cheesecake.png",
+    note: "Creamy cheesecake with a bright blueberry topping.",
+  },
+  {
+    name: "Biscoff Cheesecake",
+    image: "assets/images/biscoff-cheesecake.png",
+    note: "Creamy cheesecake with a smooth Biscoff topping.",
+  },
+  {
+    name: "Rose Milk Tres Leches",
+    image: "assets/images/rose-milk-tres-leches.png",
+    note: "Soft rose milk layers finished with cream and pistachios.",
+  },
+];
+
 const instagramLabel = `View Instagram`;
 const instagramLink = business.instagramUrl;
 const whatsappLink = business.whatsappNumber
@@ -226,23 +255,28 @@ if (dropsGrid) newDrops.forEach((item) => {
 
 const videoGrid = document.getElementById("video-grid");
 if (videoGrid) {
-  // Duplicate the short reel set so the carousel can loop without a visible end.
-  [...videos, ...videos].forEach((item) => {
-  const card = document.createElement("article");
-  card.className = "video-card";
+  const canAutoScrollReels =
+    window.matchMedia("(min-width: 901px) and (pointer: fine)").matches &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reelItems = canAutoScrollReels ? [...videos, ...videos] : videos;
 
-  const video = document.createElement("video");
-  video.src = item.src;
-  video.poster = item.poster;
-  video.autoplay = true;
-  video.muted = true;
-  video.loop = true;
-  video.playsInline = true;
-  video.controls = true;
-  video.preload = "metadata";
+  // Only desktop uses duplicate reels for its passive looping carousel.
+  reelItems.forEach((item) => {
+    const card = document.createElement("article");
+    card.className = "video-card";
 
-  card.append(video);
-  videoGrid.append(card);
+    const video = document.createElement("video");
+    video.src = item.src;
+    video.poster = item.poster;
+    video.autoplay = true;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.controls = true;
+    video.preload = "metadata";
+
+    card.append(video);
+    videoGrid.append(card);
   });
 
   let carouselFrame;
@@ -260,21 +294,23 @@ if (videoGrid) {
     carouselFrame = requestAnimationFrame(moveVideoCarousel);
   }
 
-  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (canAutoScrollReels) {
     carouselFrame = requestAnimationFrame(moveVideoCarousel);
   }
 
-  ["mouseenter", "touchstart", "focusin"].forEach((eventName) => {
-    videoGrid.addEventListener(eventName, () => {
-      isCarouselPaused = true;
+  if (canAutoScrollReels) {
+    ["mouseenter", "focusin"].forEach((eventName) => {
+      videoGrid.addEventListener(eventName, () => {
+        isCarouselPaused = true;
+      });
     });
-  });
 
-  ["mouseleave", "touchend", "focusout"].forEach((eventName) => {
-    videoGrid.addEventListener(eventName, () => {
-      isCarouselPaused = false;
+    ["mouseleave", "focusout"].forEach((eventName) => {
+      videoGrid.addEventListener(eventName, () => {
+        isCarouselPaused = false;
+      });
     });
-  });
+  }
 }
 
 const reviewsGrid = document.getElementById("reviews-grid");
@@ -350,6 +386,220 @@ if (contactTarget) contactDetails.forEach((item) => {
   `;
   contactTarget.append(card);
 });
+
+const dessertShowcase = document.querySelector(".showcase");
+if (dessertShowcase && showcaseDesserts.length) {
+  const frontImage = dessertShowcase.querySelector(".showcase-image-front");
+  const middleImage = dessertShowcase.querySelector(".showcase-image-middle");
+  const backImage = dessertShowcase.querySelector(".showcase-image-back");
+  const photo = dessertShowcase.querySelector(".showcase-photo");
+  const caption = dessertShowcase.querySelector(".showcase-caption");
+  const name = dessertShowcase.querySelector(".showcase-name");
+  const note = dessertShowcase.querySelector(".showcase-note");
+  const count = dessertShowcase.querySelector(".showcase-count");
+  const dots = dessertShowcase.querySelector(".showcase-dots");
+  const previousButton = dessertShowcase.querySelector(".showcase-arrow-prev");
+  const nextButton = dessertShowcase.querySelector(".showcase-arrow-next");
+  const servingLine = document.querySelector(".honest-label-serving");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let activeIndex = 0;
+  let autoAdvance;
+  let inView = false;
+  let isPaused = false;
+  let isTransitioning = false;
+  let touchStartX = 0;
+
+  showcaseDesserts.forEach(({ image }) => {
+    const preload = new Image();
+    preload.src = image;
+  });
+
+  dots.innerHTML = showcaseDesserts.map((dessert, index) => `
+    <button class="showcase-dot${index === 0 ? " is-active" : ""}" type="button" aria-label="Show ${dessert.name}" aria-current="${index === 0 ? "true" : "false"}"></button>
+  `).join("");
+
+  const dotButtons = [...dots.querySelectorAll(".showcase-dot")];
+  const getIndex = (index) => (index + showcaseDesserts.length) % showcaseDesserts.length;
+
+  function updateShowcase(index) {
+    const dessert = showcaseDesserts[index];
+    const middleDessert = showcaseDesserts[getIndex(index + 1)];
+    const backDessert = showcaseDesserts[getIndex(index + 2)];
+
+    frontImage.src = dessert.image;
+    frontImage.alt = dessert.name;
+    middleImage.src = middleDessert.image;
+    backImage.src = backDessert.image;
+    name.textContent = dessert.name;
+    note.textContent = dessert.note;
+    count.textContent = `${index + 1} / ${showcaseDesserts.length}`;
+    dotButtons.forEach((dot, dotIndex) => {
+      const isActive = dotIndex === index;
+      dot.classList.toggle("is-active", isActive);
+      dot.setAttribute("aria-current", String(isActive));
+    });
+
+    if (servingLine) {
+      servingLine.textContent = `Per serving: ${dessert.name}`;
+    }
+  }
+
+  function changeDessert(nextIndex, animate = true) {
+    if (isTransitioning || nextIndex === activeIndex) return;
+    isTransitioning = true;
+    const shouldAnimate = animate && !reducedMotion;
+
+    if (shouldAnimate) {
+      photo.classList.add("is-leaving");
+      caption.classList.add("is-changing");
+      servingLine?.classList.add("is-changing");
+    } else if (animate && reducedMotion) {
+      photo.classList.add("is-fading");
+    }
+
+    window.setTimeout(() => {
+      activeIndex = getIndex(nextIndex);
+      updateShowcase(activeIndex);
+      photo.classList.remove("is-leaving");
+
+      if (shouldAnimate) {
+        photo.classList.add("is-entering");
+        requestAnimationFrame(() => {
+          caption.classList.remove("is-changing");
+          servingLine?.classList.remove("is-changing");
+        });
+      }
+
+      window.setTimeout(() => {
+        photo.classList.remove("is-entering", "is-fading");
+        isTransitioning = false;
+      }, shouldAnimate ? 600 : (reducedMotion && animate ? 240 : 0));
+    }, shouldAnimate ? 220 : 0);
+  }
+
+  function stopAutoAdvance() {
+    window.clearInterval(autoAdvance);
+    autoAdvance = undefined;
+  }
+
+  function startAutoAdvance() {
+    stopAutoAdvance();
+    if (reducedMotion || !inView || isPaused || showcaseDesserts.length < 2) return;
+    autoAdvance = window.setInterval(() => changeDessert(activeIndex + 1), 3500);
+  }
+
+  previousButton?.addEventListener("click", () => {
+    changeDessert(activeIndex - 1);
+    startAutoAdvance();
+  });
+  nextButton?.addEventListener("click", () => {
+    changeDessert(activeIndex + 1);
+    startAutoAdvance();
+  });
+  dotButtons.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      changeDessert(index);
+      startAutoAdvance();
+    });
+  });
+
+  dessertShowcase.addEventListener("mouseenter", () => {
+    isPaused = true;
+    stopAutoAdvance();
+  });
+  dessertShowcase.addEventListener("mouseleave", () => {
+    isPaused = false;
+    startAutoAdvance();
+  });
+  dessertShowcase.addEventListener("focusin", () => {
+    isPaused = true;
+    stopAutoAdvance();
+  });
+  dessertShowcase.addEventListener("focusout", () => {
+    isPaused = false;
+    startAutoAdvance();
+  });
+  dessertShowcase.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "touch") touchStartX = event.clientX;
+  });
+  dessertShowcase.addEventListener("pointerup", (event) => {
+    if (event.pointerType !== "touch") return;
+    const distance = event.clientX - touchStartX;
+    if (Math.abs(distance) < 40) return;
+    changeDessert(activeIndex + (distance < 0 ? 1 : -1));
+    startAutoAdvance();
+  });
+
+  updateShowcase(activeIndex);
+
+  if ("IntersectionObserver" in window) {
+    const showcaseObserver = new IntersectionObserver((entries) => {
+      inView = entries[0].isIntersecting;
+      startAutoAdvance();
+    }, { threshold: 0.25 });
+    showcaseObserver.observe(dessertShowcase);
+  } else {
+    inView = true;
+    startAutoAdvance();
+  }
+}
+
+const honestLabelCard = document.querySelector(".honest-label-card");
+if (honestLabelCard) {
+  const honestLabelSection = honestLabelCard.closest(".honest-label-section");
+  const counters = [...honestLabelCard.querySelectorAll(".honest-label-count")];
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function setHonestLabelFinalValues() {
+    counters.forEach((counter) => {
+      counter.textContent = counter.dataset.target;
+    });
+  }
+
+  function animateHonestLabelCounter(counter) {
+    const start = Number(counter.dataset.start);
+    const target = Number(counter.dataset.target);
+    const duration = 900;
+    const startedAt = performance.now();
+
+    function updateCounter(now) {
+      const progress = Math.min((now - startedAt) / duration, 1);
+      const easedProgress = 1 - (1 - progress) ** 3;
+      counter.textContent = String(Math.round(start + (target - start) * easedProgress));
+
+      if (progress < 1) requestAnimationFrame(updateCounter);
+    }
+
+    requestAnimationFrame(updateCounter);
+  }
+
+  function revealHonestLabel() {
+    honestLabelCard.classList.add("is-visible");
+    counters.forEach((counter, index) => {
+      window.setTimeout(() => animateHonestLabelCounter(counter), index * 350);
+    });
+    window.setTimeout(() => {
+      honestLabelCard.classList.add("is-stamp-visible");
+    }, 2550);
+  }
+
+  if (reducedMotion || !("IntersectionObserver" in window)) {
+    setHonestLabelFinalValues();
+  } else {
+    counters.forEach((counter) => {
+      counter.textContent = counter.dataset.start;
+    });
+    honestLabelCard.classList.add("is-animating");
+
+    const honestLabelObserver = new IntersectionObserver((entries, observer) => {
+      if (!entries[0].isIntersecting) return;
+      revealHonestLabel();
+      observer.disconnect();
+    }, { threshold: 0.25 });
+
+    honestLabelObserver.observe(honestLabelSection || honestLabelCard);
+  }
+}
 
 
 

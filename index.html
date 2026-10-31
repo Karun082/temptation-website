@@ -8,6 +8,7 @@
       name="description"
       content="Temptation by temptations137 serves handcrafted eggless desserts with no preservatives, no essence, and no chemicals added. Pickup only. Order through Instagram or WhatsApp."
     />
+    <link rel="canonical" href="https://temptation-website.vercel.app/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -55,8 +56,9 @@
               Eggless desserts with no preservatives, no essence, and no
               chemicals added. Just fresh, indulgent desserts crafted for
               pickup and enjoyed at their best.
-            </p>            <div class="pickup-card">
-              <div class="pickup-icon" aria-hidden="true">◌</div>
+            </p>
+            <div class="pickup-card">
+              <div class="pickup-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none"><path d="M13 25.5 32 15l19 10.5v22L32 58 13 47.5v-22Z" fill="currentColor" opacity=".18"/><path d="M13 25.5 32 36l19-10.5M32 36v22M20 21.5l19 10.5" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M25 30h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
               <div>
                 <h2>Pickup only</h2>
                 <p>
@@ -81,12 +83,44 @@
           </div>
         </section>
 
-        <section class="values-band" aria-label="Brand values">
-          <article class="value-pill"><span class="value-index">01</span><h3>Eggless</h3><p>Made without eggs.</p></article>
-          <article class="value-pill"><span class="value-index">02</span><h3>No Preservatives</h3><p>Freshly prepared in small batches.</p></article>
-          <article class="value-pill"><span class="value-index">03</span><h3>No Essence</h3><p>Real ingredients and honest flavour.</p></article>
-          <article class="value-pill"><span class="value-index">04</span><h3>No Chemicals Added</h3><p>Simple desserts, thoughtfully made.</p></article>
-          <article class="value-pill"><span class="value-index">05</span><h3>Baked with Love</h3><p>Made with care for every order.</p></article>
+        <section class="honest-label-section" aria-labelledby="honest-label-title">
+          <div class="honest-label-card">
+            <header class="honest-label-header">
+              <p>TEMPTATIONS137</p>
+              <h2 id="honest-label-title">The Honest Label</h2>
+              <span class="honest-label-serving">Per serving, handcrafted in small batches</span>
+            </header>
+            <div class="honest-label-divider" aria-hidden="true"></div>
+            <ul class="honest-label-list" aria-label="Temptation promises">
+              <li class="honest-label-row" aria-label="Eggs: none"><span>Eggs</span><span class="honest-label-leader" aria-hidden="true"></span><strong><span class="honest-label-count" data-start="100" data-target="0" aria-hidden="true">0</span> g</strong></li>
+              <li class="honest-label-row" aria-label="Preservatives: none"><span>Preservatives</span><span class="honest-label-leader" aria-hidden="true"></span><strong><span class="honest-label-count" data-start="100" data-target="0" aria-hidden="true">0</span> mg</strong></li>
+              <li class="honest-label-row" aria-label="Essence: none"><span>Essence</span><span class="honest-label-leader" aria-hidden="true"></span><strong><span class="honest-label-count" data-start="100" data-target="0" aria-hidden="true">0</span> ml</strong></li>
+              <li class="honest-label-row" aria-label="Chemicals: none"><span>Chemicals</span><span class="honest-label-leader" aria-hidden="true"></span><strong><span class="honest-label-count" data-start="100" data-target="0" aria-hidden="true">0</span></strong></li>
+            </ul>
+            <div class="honest-label-divider" aria-hidden="true"></div>
+            <div class="honest-label-love" aria-label="Baked with love: 100 percent"><span>Baked with love</span><strong><span class="honest-label-count" data-start="0" data-target="100" aria-hidden="true">100</span>%</strong></div>
+            <p class="honest-label-footer">Real ingredients. Made fresh for every order.</p>
+            <span class="honest-label-stamp" aria-hidden="true">100%<br />EGGLESS</span>
+          </div>
+          <div class="showcase" aria-label="Dessert photo showcase">
+            <div class="showcase-stack" role="region" aria-roledescription="carousel" aria-label="Temptations137 dessert photos">
+              <img class="showcase-image showcase-image-back" src="assets/images/blueberry-cheesecake.png" alt="" width="800" height="1000" loading="lazy" aria-hidden="true" />
+              <img class="showcase-image showcase-image-middle" src="assets/images/chocolate-tiramisu.jpeg" alt="" width="800" height="1000" loading="lazy" aria-hidden="true" />
+              <figure class="showcase-photo">
+                <img class="showcase-image showcase-image-front" src="assets/images/classic-kapi-close.jpeg" alt="Classic Kapi Tiramisu" width="800" height="1000" fetchpriority="high" />
+                <figcaption class="showcase-caption" aria-live="polite">
+                  <strong class="showcase-name">Classic Kapi Tiramisu</strong>
+                  <span class="showcase-note">Made with South Indian filter coffee.</span>
+                </figcaption>
+              </figure>
+              <button class="showcase-arrow showcase-arrow-prev" type="button" aria-label="Show previous dessert">&#8592;</button>
+              <button class="showcase-arrow showcase-arrow-next" type="button" aria-label="Show next dessert">&#8594;</button>
+            </div>
+            <div class="showcase-progress" aria-label="Select a dessert">
+              <span class="showcase-count" aria-hidden="true">1 / 5</span>
+              <div class="showcase-dots"></div>
+            </div>
+          </div>
         </section>
 
         <section class="section intro-section" id="menu">

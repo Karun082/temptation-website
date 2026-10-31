@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://temptation-website.vercel.app/sitemap.xml
