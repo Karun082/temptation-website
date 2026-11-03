@@ -45,12 +45,6 @@ const canAutoplayMedia =
   window.matchMedia("(min-width: 901px) and (pointer: fine)").matches &&
   !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-document.querySelectorAll(".hero-reel").forEach((video) => {
-  if (!canAutoplayMedia) return;
-  video.preload = "metadata";
-  video.play().catch(() => {});
-});
-
 const heroText = document.querySelector(".hero-text");
 if (heroText && business.taglines?.length) {
   heroText.textContent = `${business.taglines[1]}. ${business.taglines[2]} Just fresh, indulgent desserts crafted for pickup and enjoyed at their best.`;
