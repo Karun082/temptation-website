@@ -11,12 +11,12 @@ const {
 const showcaseDesserts = [
   {
     name: "Classic Kapi Tiramisu",
-    image: "assets/images/classic-kapi-close.jpeg",
+    image: "assets/images/classic-kapi-tiramisu.jpg",
     note: "Made with South Indian filter coffee.",
   },
   {
     name: "Chocolate Tiramisu",
-    image: "assets/images/chocolate-tiramisu.jpeg",
+    image: "assets/images/chocolate-tiramisu.jpg",
     note: "Rich chocolate layers with a deep cocoa finish.",
   },
   {
@@ -31,7 +31,7 @@ const showcaseDesserts = [
   },
   {
     name: "Rose Milk Tres Leches",
-    image: "assets/images/rose-milk-tres-leches.png",
+    image: "assets/images/rose-milk-tres-leches.jpg",
     note: "Soft rose milk layers finished with cream and pistachios.",
   },
 ];
@@ -41,6 +41,15 @@ const instagramLink = business.instagramUrl;
 const whatsappLink = business.whatsappNumber
   ? `https://wa.me/${business.whatsappNumber}?text=${encodeURIComponent(business.whatsappMessage)}`
   : "";
+const canAutoplayMedia =
+  window.matchMedia("(min-width: 901px) and (pointer: fine)").matches &&
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+document.querySelectorAll(".hero-reel").forEach((video) => {
+  if (!canAutoplayMedia) return;
+  video.preload = "metadata";
+  video.play().catch(() => {});
+});
 
 const heroText = document.querySelector(".hero-text");
 if (heroText && business.taglines?.length) {
@@ -177,13 +186,16 @@ if (dessertGrid) {
       : menu.filter((item) => item.category === category);
 
     dessertGrid.innerHTML = "";
-    visibleItems.forEach((item) => {
+    visibleItems.forEach((item, index) => {
       const card = document.createElement("article");
       card.className = "dessert-card";
 
       const image = document.createElement("img");
       image.src = item.image;
       image.alt = item.alt;
+      image.loading = index < 2 ? "eager" : "lazy";
+      image.decoding = "async";
+      image.fetchPriority = index === 0 ? "high" : "auto";
 
       const copy = document.createElement("div");
       copy.className = "dessert-copy";
@@ -255,9 +267,7 @@ if (dropsGrid) newDrops.forEach((item) => {
 
 const videoGrid = document.getElementById("video-grid");
 if (videoGrid) {
-  const canAutoScrollReels =
-    window.matchMedia("(min-width: 901px) and (pointer: fine)").matches &&
-    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const canAutoScrollReels = canAutoplayMedia;
   const reelItems = canAutoScrollReels ? [...videos, ...videos] : videos;
 
   // Only desktop uses duplicate reels for its passive looping carousel.
@@ -266,17 +276,40 @@ if (videoGrid) {
     card.className = "video-card";
 
     const video = document.createElement("video");
-    video.src = item.src;
     video.poster = item.poster;
-    video.autoplay = true;
     video.muted = true;
     video.loop = true;
     video.playsInline = true;
     video.controls = true;
-    video.preload = "metadata";
+    video.preload = "none";
+    video.dataset.src = item.src;
 
     card.append(video);
     videoGrid.append(card);
+  });
+
+  const loadVideo = (video) => {
+    if (video.src) return;
+    video.src = video.dataset.src;
+    video.preload = "metadata";
+    video.load();
+    if (canAutoplayMedia) video.play().catch(() => {});
+  };
+
+  const videoObserver = "IntersectionObserver" in window
+    ? new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const video = entry.target.querySelector("video");
+        if (video) loadVideo(video);
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "300px 0px" })
+    : null;
+
+  videoGrid.querySelectorAll(".video-card").forEach((card) => {
+    if (videoObserver) videoObserver.observe(card);
+    else loadVideo(card.querySelector("video"));
   });
 
   let carouselFrame;
@@ -291,11 +324,18 @@ if (videoGrid) {
       }
     }
 
-    carouselFrame = requestAnimationFrame(moveVideoCarousel);
+    if (!document.hidden) carouselFrame = requestAnimationFrame(moveVideoCarousel);
   }
 
   if (canAutoScrollReels) {
     carouselFrame = requestAnimationFrame(moveVideoCarousel);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden && !carouselFrame) carouselFrame = requestAnimationFrame(moveVideoCarousel);
+      if (document.hidden && carouselFrame) {
+        cancelAnimationFrame(carouselFrame);
+        carouselFrame = undefined;
+      }
+    });
   }
 
   if (canAutoScrollReels) {
@@ -408,11 +448,6 @@ if (dessertShowcase && showcaseDesserts.length) {
   let isPaused = false;
   let isTransitioning = false;
   let touchStartX = 0;
-
-  showcaseDesserts.forEach(({ image }) => {
-    const preload = new Image();
-    preload.src = image;
-  });
 
   dots.innerHTML = showcaseDesserts.map((dessert, index) => `
     <button class="showcase-dot${index === 0 ? " is-active" : ""}" type="button" aria-label="Show ${dessert.name}" aria-current="${index === 0 ? "true" : "false"}"></button>

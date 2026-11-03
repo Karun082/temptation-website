@@ -23,7 +23,7 @@ const siteData = {
       availability: "Available",
       description:
         "A layered tiramisu with a smooth, light finish and a balanced coffee profile.",
-      image: "assets/images/classic-kapi-close.jpeg",
+      image: "assets/images/classic-kapi-tiramisu.jpg",
       alt: "Classic Kapi Tiramisu in 250ml box",
     },
     {
@@ -34,7 +34,7 @@ const siteData = {
       availability: "Unavailable",
       description:
         "A rich chocolate-forward tiramisu with creamy layers and a deep cocoa finish.",
-      image: "assets/images/chocolate-tiramisu.jpeg",
+      image: "assets/images/chocolate-tiramisu.jpg",
       alt: "Chocolate Tiramisu in 250ml box",
     },
     {
@@ -61,7 +61,7 @@ const siteData = {
       size: "250ml takeaway box",
       availability: "Available",
       description: "A rich chocolate cheesecake with a smooth, indulgent finish.",
-      image: "assets/images/dream-tub-chocolate-cheesecake.png",
+      image: "assets/images/dream-tub-chocolate-cheesecake.jpg",
       alt: "Dream Tub Chocolate Cheesecake in 250ml takeaway box",
     },
     {
@@ -71,7 +71,7 @@ const siteData = {
       availability: "Available",
       description:
         "A delicate rose milk tres leches topped with soft cream and pistachios.",
-      image: "assets/images/rose-milk-tres-leches.png",
+      image: "assets/images/rose-milk-tres-leches.jpg",
       alt: "Rose Milk Tres Leches in 750ml takeaway box",
     },
     {
@@ -82,7 +82,7 @@ const siteData = {
       availability: "Available",
       description:
         "A soft milk-soaked dessert with a creamy finish and a light, indulgent texture.",
-      image: "assets/images/tres-leches.jpeg",
+      image: "assets/images/tres-leches.jpg",
       alt: "Tres leches dessert in 750 ml bowl",
     },
     {
